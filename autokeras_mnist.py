@@ -5,11 +5,20 @@ import tensorflow as tf
 from tensorflow.keras.datasets import mnist
 from tensorflow.python.keras.utils.data_utils import Sequence
 import autokeras as ak
+
+import sys
+try:
+    cores = int(sys.argv[1])
+    tf.config.threading.set_intra_op_parallelism_threads(cores)
+    tf.config.threading.set_inter_op_parallelism_threads(cores)
+except IndexError:
+    pass
+
 (x_train, y_train), (x_test, y_test) = mnist.load_data()
 
 # Initialize the image classifier.
 clf = ak.ImageClassifier(
-            max_trials=1,
+            max_trials=10,
             seed=1234567890)
 
 # Feed the image classifier with training data.
